@@ -6,6 +6,8 @@ from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler
 from skimage.io import imread
 from skimage.transform import resize
+import matplotlib.pyplot as plt
+
 
 def load_images(folder, label, image_size=(64, 64), max_images=1000):
     images = []
@@ -20,6 +22,17 @@ def load_images(folder, label, image_size=(64, 64), max_images=1000):
             images.append(img_resized.flatten())  # Flatten the image
             labels.append(label)
     return np.array(images), np.array(labels)
+
+def show_images(images, labels, num=5, image_size=(64, 64, 3)):
+
+    for i in range(num):
+        img = images[i].reshape(image_size)  # Reshape back to the original size
+        plt.figure(figsize=(2, 2))
+        plt.imshow(img)
+        plt.title(f"Label: {'Cat' if labels[i] == 0 else 'Dog'}")
+        plt.axis('off')
+        plt.show()
+
 
 # Load the data
 cat_folder = r"C:\Users\umanshi\Downloads\train\cats"
@@ -51,3 +64,6 @@ print(f"Accuracy: {accuracy * 100:.2f}%")
 # Classification report
 print(classification_report(y_test, y_pred, target_names=['Cat', 'Dog']))
 
+# Display 5 sample images
+load_images(cat_folder,0)
+show_images(cat_images, cat_labels, num=5, image_size=(64, 64, 3))
